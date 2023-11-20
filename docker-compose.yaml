@@ -4,31 +4,61 @@ services:
   kamailio:
     container_name: sip_dev_kamailio
     image: kamailio/kamailio-ci
-#    volumes:
-#      - ./docker/kamailio:/etc/kamailio
-    environment:
-      - RTPENGINE=udp:127.0.0.1:22222
+    network_mode: host
+    volumes:
+      - ./docker/kamailio:/etc/kamailio
+#    environment:
+#      - RTPENGINE=udp:127.0.0.1:22222
 
   db:
     container_name: sip_dev_postgres
     image: postgres
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_DB: "kamailio"
+      POSTGRES_USER: "kamailio"
+      POSTGRES_PASSWORD: "kamailio"
     ports:
-      - "5432"
+      - "5432:5432"
     volumes:
       - sip_dev_postgres:/var/lib/postgresql/data
+    networks:
+      sip_dev_network:
+        ipv4_address: 172.28.12.2
+
+#  rtpengine:
+#    container_name: sip_dev_rtpengine
+#    image: drachtio/rtpengine
+#    privileged: true
+#    network_mode: host
+#    volumes:
+#      - ./docker/rtpengine:/etc/rtpengine
+###    command: rtpengine --interface=eth0 --listen-ng=127.0.0.1:22222 --listen-tcp=127.0.0.1:22223 --foreground
+#    command: rtpengine --config-file /etc/rtpengine/rtpengine.conf --foreground
+
+  # work ver
+#  rtpengine:
+#    container_name: sip_dev_rtpengine
+#    image: drachtio/rtpengine
+#    network_mode: host
+#    command: rtpengine --interface=192.168.13.84!127.0.0.1 --listen-ng=127.0.0.1:2223 --listen-http=127.0.0.1:2225
 
   rtpengine:
     container_name: sip_dev_rtpengine
-    image: drachtio/rtpengine
-    privileged: true
-    ports:
-      - "22222:22222/udp"
-      - "22223:22223/tcp"
+    image: fonoster/rtpengine:latest
+    network_mode: host
     volumes:
-      - ./docker/rtpengine:/etc/rtpengine
-    command: rtpengine --interface=eth0 --listen-ng=127.0.0.1:22222 --listen-tcp=127.0.0.1:22223 --foreground
+      - ./docker/rtpengine/rtpengine.conf:/etc/rtpengine.conf
+#    command: rtpengine --interface=192.168.13.84!127.0.0.1 --listen-ng=127.0.0.1:2223 --listen-http=127.0.0.1:2225 --log-level=4
+    command: rtpengine --config-file=/etc/rtpengine.conf --foreground
 
 volumes:
   sip_dev_postgres:
+
+networks:
+  sip_dev_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.12.0/29
+          gateway: 172.28.12.1
