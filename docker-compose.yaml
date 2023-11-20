@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  kamailio:
+    container_name: sip_dev_kamailio
+    image: kamailio/kamailio-ci
+#    volumes:
+#      - ./docker/kamailio:/etc/kamailio
+    environment:
+      - RTPENGINE=udp:127.0.0.1:22222
+
+  db:
+    container_name: sip_dev_postgres
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5432"
+    volumes:
+      - sip_dev_postgres:/var/lib/postgresql/data
+
+  rtpengine:
+    container_name: sip_dev_rtpengine
+    image: drachtio/rtpengine
+    privileged: true
+    ports:
+      - "22222:22222/udp"
+      - "22223:22223/tcp"
+    volumes:
+      - ./docker/rtpengine:/etc/rtpengine
+    command: rtpengine --interface=eth0 --listen-ng=127.0.0.1:22222 --listen-tcp=127.0.0.1:22223 --foreground
+
+volumes:
+  sip_dev_postgres:
