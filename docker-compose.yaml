@@ -1,13 +1,6 @@
 version: '3.9'
 
 services:
-#  kamailio:
-#    container_name: sip_dev_kamailio
-#    image: kamailio/kamailio-ci
-#    network_mode: host
-#    volumes:
-#      - ./docker/kamailio:/etc/kamailio
-
   kamailio:
     container_name: sip_dev_kamailio
     build:
