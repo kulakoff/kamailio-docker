@@ -3,7 +3,7 @@ version: '3.9'
 services:
   kamailio:
     container_name: sip_dev_kamailio
-    image: kamailio/kamailio-ci
+    image: readytalk/kamailio-docker
     network_mode: host
     volumes:
       - ./docker/kamailio:/etc/kamailio
@@ -17,39 +17,19 @@ services:
       POSTGRES_DB: "kamailio"
       POSTGRES_USER: "kamailio"
       POSTGRES_PASSWORD: "kamailio"
-    ports:
-      - "5432:5432"
     volumes:
       - sip_dev_postgres:/var/lib/postgresql/data
     networks:
       sip_dev_network:
         ipv4_address: 172.28.12.2
 
-#  rtpengine:
-#    container_name: sip_dev_rtpengine
-#    image: drachtio/rtpengine
-#    privileged: true
-#    network_mode: host
-#    volumes:
-#      - ./docker/rtpengine:/etc/rtpengine
-###    command: rtpengine --interface=eth0 --listen-ng=127.0.0.1:22222 --listen-tcp=127.0.0.1:22223 --foreground
-#    command: rtpengine --config-file /etc/rtpengine/rtpengine.conf --foreground
-
-  # work ver
-#  rtpengine:
-#    container_name: sip_dev_rtpengine
-#    image: drachtio/rtpengine
-#    network_mode: host
-#    command: rtpengine --interface=192.168.13.84!127.0.0.1 --listen-ng=127.0.0.1:2223 --listen-http=127.0.0.1:2225
-
   rtpengine:
     container_name: sip_dev_rtpengine
     image: fonoster/rtpengine:latest
     network_mode: host
     volumes:
-      - ./docker/rtpengine/rtpengine.conf:/etc/rtpengine.conf
-#    command: rtpengine --interface=192.168.13.84!127.0.0.1 --listen-ng=127.0.0.1:2223 --listen-http=127.0.0.1:2225 --log-level=4
-    command: rtpengine --config-file=/etc/rtpengine.conf --foreground
+      - ./docker/rtpengine/rtpengine.conf:/etc/rtpengine/rtpengine.conf
+    command: rtpengine --config-file=/etc/rtpengine/rtpengine.conf --foreground
 
 volumes:
   sip_dev_postgres:
