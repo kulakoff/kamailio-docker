@@ -1,5 +1,4 @@
-#FROM debian/eol:stretch
-FROM debian:10
+FROM ubuntu:jammy
 
 LABEL maintainer="Victor Seva <linuxmaniac@torreviejawireless.org>"
 
@@ -11,43 +10,55 @@ ENV REFRESHED_AT 2023-11-21
 
 RUN rm -rf /var/lib/apt/lists/* && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -qq --assume-yes gnupg wget
 # kamailio repo
-RUN echo "deb http://deb.kamailio.org/kamailio57 stretch main" >   /etc/apt/sources.list.d/kamailio.list
+RUN echo "deb http://deb.kamailio.org/kamailio57 jammy main" > /etc/apt/sources.list.d/kamailio.list
 RUN wget -O- http://deb.kamailio.org/kamailiodebkey.gpg | apt-key add -
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -qq --assume-yes \ 
-	kamailio=5.7.3+bpo9 \
-	kamailio-autheph-modules=5.7.3+bpo9 
-RUN apt-get install -y  kamailio-extra-modules=5.7.3+bpo9
-	#kamailio-json-modules/неизвестно,now 5.6.4+bpo11 amd64 [установлен]
-	#kamailio-postgres-modules/неизвестно,now 5.6.4+bpo11 amd64 [установлен]
-	#kamailio-radius-modules/неизвестно,now 5.6.4+bpo11 amd64 [установлен]
-	#kamailio-sctp-modules/неизвестно,now 5.6.4+bpo11 amd64 [установлен]
-	#kamailio-tls-modules/неизвестно,now 5.6.4+bpo11 amd64 [установлен]
-	#kamailio-utils-modules/неизвестно,now 5.6.4+bpo11 amd64 [установлен]
-	#kamailio-websocket-modules/неизвестно,now 5.6.4+bpo11 amd64 [установлен]
-	#kamailio/неизвестно,now 5.6.4+bpo11 amd64 [установлен]
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -qq --assume-yes  \
+    kamailio=5.7.3+ubuntu22.04 \
+    kamailio-autheph-modules=5.7.3+ubuntu22.04 \
+    kamailio-berkeley-bin=5.7.3+ubuntu22.04 \
+    kamailio-berkeley-modules=5.7.3+ubuntu22.04 \
+    kamailio-cnxcc-modules=5.7.3+ubuntu22.04 \
+    kamailio-cpl-modules=5.7.3+ubuntu22.04 \
+    kamailio-dbg=5.7.3+ubuntu22.04 \
+    kamailio-erlang-modules=5.7.3+ubuntu22.04 \
+    kamailio-extra-modules=5.7.3+ubuntu22.04 \
+    kamailio-geoip-modules=5.7.3+ubuntu22.04 \
+    kamailio-geoip2-modules=5.7.3+ubuntu22.04 \
+    kamailio-ims-modules=5.7.3+ubuntu22.04 \
+    kamailio-json-modules=5.7.3+ubuntu22.04 \
+    kamailio-kazoo-modules=5.7.3+ubuntu22.04 \
+    kamailio-ldap-modules=5.7.3+ubuntu22.04 \
+    kamailio-lua-modules=5.7.3+ubuntu22.04 \
+    kamailio-lwsc-modules=5.7.3+ubuntu22.04 \
+    kamailio-memcached-modules=5.7.3+ubuntu22.04 \
+    kamailio-mongodb-modules=5.7.3+ubuntu22.04 \
+    kamailio-mono-modules=5.7.3+ubuntu22.04 \
+    kamailio-mqtt-modules=5.7.3+ubuntu22.04 \
+    kamailio-mysql-modules=5.7.3+ubuntu22.04 \
+    kamailio-nats-modules=5.7.3+ubuntu22.04 \
+    kamailio-nth=5.7.3+ubuntu22.04 \
+    kamailio-outbound-modules=5.7.3+ubuntu22.04 \
+    kamailio-perl-modules=5.7.3+ubuntu22.04 \
+    kamailio-phonenum-modules=5.7.3+ubuntu22.04 \
+    kamailio-postgres-modules=5.7.3+ubuntu22.04 \
+    kamailio-presence-modules=5.7.3+ubuntu22.04 \
+    kamailio-python3-modules=5.7.3+ubuntu22.04 \
+    kamailio-rabbitmq-modules=5.7.3+ubuntu22.04 \
+    kamailio-radius-modules=5.7.3+ubuntu22.04 \
+    kamailio-redis-modules=5.7.3+ubuntu22.04 \
+    kamailio-ruby-modules=5.7.3+ubuntu22.04 \
+    kamailio-sctp-modules=5.7.3+ubuntu22.04 \
+    kamailio-secsipid-modules=5.7.3+ubuntu22.04 \
+    kamailio-snmpstats-modules=5.7.3+ubuntu22.04 \
+    kamailio-sqlite-modules=5.7.3+ubuntu22.04 \
+    kamailio-systemd-modules=5.7.3+ubuntu22.04 \
+    kamailio-tls-modules=5.7.3+ubuntu22.04 \
+    kamailio-unixodbc-modules=5.7.3+ubuntu22.04 \
+    kamailio-utils-modules=5.7.3+ubuntu22.04 \
+    kamailio-websocket-modules=5.7.3+ubuntu22.04 \
+    kamailio-xml-modules=5.7.3+ubuntu22.04 \
+    kamailio-xmpp-modules=5.7.3+ubuntu22.04
 
-
-	#kamailio-berkeley-bin=5.7.3+bpo9 \
-	#kamailio-berkeley-modules=5.7.3+bpo9 \ 
-	#kamailio-cnxcc-modules=5.7.3+bpo9 \
-	#kamailio-cpl-modules=5.7.3+bpo9 \
-	#kamailio-dbg=5.7.3+bpo9 \ 
-	#kamailio-erlang-modules=5.7.3+bpo9 \
-	#kamailio-extra-modules=5.7.3+bpo9 \ 
-	#kamailio-geoip-modules=5.7.3+bpo9 \
-	#kamailio-geoip2-modules=5.7.3+bpo9 \
-	#kamailio-ims-modules=5.7.3+bpo9 \
-	#kamailio-java-modules=5.7.3+bpo9 \
-	#kamailio-json-modules=5.7.3+bpo9 \
-	#kamailio-kazoo-modules=5.7.3+bpo9 \
-	#kamailio-ldap-modules=5.7.3+bpo9 \
-	#kamailio-lua-modules=5.7.3+bpo9 \
-	#kamailio-memcached-modules=5.7.3+bpo9 \
-	#kamailio-mongodb-modules=5.7.3+bpo9 \
-	#kamailio-mono-modules=5.7.3+bpo9
-	#kamailio-mqtt-modules=5.7.3+bpo9 kamailio-mysql-modules=5.7.3+bpo9 kamailio-nth=5.7.3+bpo9 kamailio-outbound-modules=5.7.3+bpo9 kamailio-perl-modules=5.7.3+bpo9 kamailio-phonenum-modules=5.7.3+bpo9 kamailio-postgres-modules=5.7.3+bpo9 kamailio-presence-modules=5.7.3+bpo9 kamailio-python-modules=5.7.3+bpo9 kamailio-python3-modules=5.7.3+bpo9 kamailio-rabbitmq-modules=5.7.3+bpo9 kamailio-radius-modules=5.7.3+bpo9 kamailio-redis-modules=5.7.3+bpo9 kamailio-ruby-modules=5.7.3+bpo9 kamailio-sctp-modules=5.7.3+bpo9 kamailio-snmpstats-modules=5.7.3+bpo9 kamailio-sqlite-modules=5.7.3+bpo9 kamailio-systemd-modules=5.7.3+bpo9 kamailio-tls-modules=5.7.3+bpo9 kamailio-unixodbc-modules=5.7.3+bpo9 kamailio-utils-modules=5.7.3+bpo9 kamailio-websocket-modules=5.7.3+bpo9 kamailio-xml-modules=5.7.3+bpo9 kamailio-xmpp-modules=5.7.3+bpo9
-
-# set app volume
 VOLUME /etc/kamailio
 
 # clean

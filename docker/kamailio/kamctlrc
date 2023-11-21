@@ -5,15 +5,15 @@ DBHOST=172.28.12.2
 DBPORT=5432
 DBNAME=kamailio
 
-##DBRWUSER="kamailio"
-##DBRWPW="kamailio"
-DBRWUSER="root"
-DBRWPW="toor"
+DBRWUSER="kamailio"
+DBRWPW="kamailio"
+#DBRWUSER="root"
+#DBRWPW="toor"
 
-##DBROUSER="kamailioro"
-##DBROPW="kamailioro"
-DBROUSER="root"
-DBROPW="toor"
+DBROUSER="kamailioro"
+DBROPW="kamailioro"
+#DBROUSER="root"
+#DBROPW="toor"
 
 
 DBROOTUSER="root"
